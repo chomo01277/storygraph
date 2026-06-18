@@ -164,6 +164,13 @@ export default function PlayScreen({ story }: { story: Story }) {
     .filter(Boolean) as StoryNode[];
 
   const isEnding = node?.kind === "main_ending" || node?.kind === "sub_ending";
+  const nextLabel = isEnding
+    ? "Finish ▸"
+    : outEdges.length === 1
+    ? `▶ ${story.nodes.find((n) => n.id === outEdges[0].target)?.title ?? "Continue"}`
+    : outEdges.length > 1
+    ? "Where next? ▸"
+    : "Finish ▸";
 
   // ── Render ─────────────────────────────────────────────────
   return (
@@ -298,8 +305,9 @@ export default function PlayScreen({ story }: { story: Story }) {
                   <button
                     onClick={continueStory}
                     className="rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-bright"
+                    title="Advance the story to the next scene"
                   >
-                    {isEnding ? "Finish ▸" : "Continue ▸"}
+                    {nextLabel}
                   </button>
                 </div>
               </div>

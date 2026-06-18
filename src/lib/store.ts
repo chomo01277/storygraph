@@ -23,7 +23,7 @@ function blankStory(): Story {
     emoji: "📖",
     worldview: "",
     endingPrompt: "",
-    model: "claude-opus-4-6",
+    model: "claude-haiku-4-5",
     advanced: { minimizeProtagonistDialogue: false, randomDice: false },
     characters: [],
     assets: [],
@@ -206,7 +206,7 @@ export const useStore = create<StoreState>()(
         })),
     }),
     {
-      name: "storygraph:v2",
+      name: "storygraph:v3",
       onRehydrateStorage: () => (state) => {
         if (!state) return;
         if (Object.keys(state.stories).length === 0) {
