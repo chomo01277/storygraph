@@ -64,6 +64,11 @@ body {
   --xy-edge-stroke-default: #4b5563;
   --xy-edge-stroke-selected-default: #007aff;
   --xy-connectionline-stroke-default: #007aff;
+  --xy-controls-button-background-color-default: #262727;
+  --xy-controls-button-background-color-hover-default: #333333;
+  --xy-controls-button-color-default: #d1d5db;
+  --xy-controls-button-color-hover-default: #ffffff;
+  --xy-controls-button-border-color-default: #3e3e41;
 }
 .react-flow__edge-path {
   stroke-width: 2;
@@ -79,13 +84,15 @@ body {
   box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.6);
 }
 .react-flow__controls-button {
-  background: #262727;
-  border-bottom: 1px solid #3e3e41;
-  color: #d1d5db;
-  fill: #d1d5db;
+  background: #262727 !important;
+  border-bottom: 1px solid #3e3e41 !important;
+  color: #d1d5db !important;
+}
+.react-flow__controls-button svg {
+  fill: #d1d5db !important;
 }
 .react-flow__controls-button:hover {
-  background: #333333;
+  background: #333333 !important;
 }
 
 /* Narration prose rhythm in the player */
