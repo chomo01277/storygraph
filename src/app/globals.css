@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+/* ── Design tokens (dark) ──────────────────────────────────── */
+@theme {
+  --color-canvas: #1a1b1b; /* page background */
+  --color-surface: #262727; /* cards, dialogs, panels */
+  --color-panel: #2d2d2d; /* nodes, raised rows */
+  --color-elevated: #333333; /* hover / elevated */
+  --color-line: #3e3e41; /* borders */
+  --color-line-strong: #595b63; /* input outlines */
+
+  --color-ink: #ffffff; /* primary text */
+  --color-muted: #d1d5db; /* secondary text */
+  --color-faint: #9ca3af; /* tertiary text */
+  --color-fainter: #737883; /* hints */
+
+  --color-primary: #bc1e51; /* Duck pink — primary CTAs */
+  --color-primary-bright: #e72563;
+  --color-primary-dark: #92173f;
+
+  --color-blue: #007aff; /* Duck blue — graph editor accent */
+  --color-blue-bright: #3393ff;
+
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, "Segoe UI", Roboto, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Thin dark scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3e3e41 transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #3e3e41;
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ── React Flow dark theme ─────────────────────────────────── */
+.react-flow {
+  --xy-background-color-default: #1a1b1b;
+  --xy-edge-stroke-default: #4b5563;
+  --xy-edge-stroke-selected-default: #007aff;
+  --xy-connectionline-stroke-default: #007aff;
+}
+.react-flow__edge-path {
+  stroke-width: 2;
+}
+.react-flow__handle {
+  border-radius: 9999px;
+}
+.react-flow__controls {
+  background: #262727;
+  border: 1px solid #3e3e41;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.6);
+}
+.react-flow__controls-button {
+  background: #262727;
+  border-bottom: 1px solid #3e3e41;
+  color: #d1d5db;
+  fill: #d1d5db;
+}
+.react-flow__controls-button:hover {
+  background: #333333;
+}
+
+/* Narration prose rhythm in the player */
+.prose-narration p {
+  margin-bottom: 0.85rem;
+  line-height: 1.85;
+}
+.prose-narration strong {
+  color: #fff;
+}
