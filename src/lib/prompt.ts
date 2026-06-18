@@ -37,9 +37,9 @@ export function buildSystemPrompt(
     story.advanced.randomDice
       ? `- Where an action's outcome is uncertain, narrate it as a risky dice-roll with real chance of failure.`
       : ``,
-    `- On the VERY LAST line, output 2–4 short, concrete options the player could take, formatted EXACTLY as:`,
+    `- End with 2–4 short, concrete options on ONE final line, separated by " | ", formatted EXACTLY as:`,
     `CHOICES: option one | option two | option three`,
-    `- Never write the word CHOICES anywhere except that final line.`,
+    `- Do NOT number, bold, bullet, or line-break the options. Write CHOICES only on that final line.`,
   ]
     .filter(Boolean)
     .join("\n");
@@ -53,16 +53,33 @@ export function transitionNote(node: StoryNode, playerName: string): string {
   )} Carry the narrative forward into this event.)`;
 }
 
-/** Split an assistant message into prose + parsed choice chips. */
+/** Strip list labels / markdown from a single choice candidate. */
+function cleanChoice(s: string): string {
+  return s
+    .replace(/\*/g, "") // drop ** bold / * italic markers
+    .trim()
+    .replace(/^[-•\s]+/, "") // bullets
+    .replace(/^[A-Za-z0-9]\s*[.):|]\s*/, "") // "a)" "1." "b |" labels
+    .replace(/^["'“]+|["'”]+$/g, "")
+    .trim();
+}
+
+/**
+ * Split an assistant message into prose + choice chips. Robust to the model
+ * formatting choices as a single piped line OR a markdown list (**a** | …),
+ * bulleted, or numbered.
+ */
 export function parseChoices(text: string): { prose: string; choices: string[] } {
-  const match = text.match(/CHOICES:\s*(.+)\s*$/i);
-  if (!match) return { prose: text.trim(), choices: [] };
-  const choices = match[1]
-    .split("|")
-    .map((c) => c.trim())
-    .filter(Boolean)
-    .slice(0, 4);
-  const prose = text.slice(0, match.index).trim();
+  const idx = text.toUpperCase().lastIndexOf("CHOICES");
+  if (idx === -1) return { prose: text.trim(), choices: [] };
+
+  const prose = text.slice(0, idx).replace(/[*#>\s]+$/, "").trim();
+  const region = text.slice(idx + "CHOICES".length).replace(/^[\s*:>-]+/, "");
+
+  const lines = region.split("\n").map((s) => s.trim()).filter(Boolean);
+  const raw = lines.length > 1 ? lines : (lines[0] ?? "").split("|");
+  const choices = raw.map(cleanChoice).filter(Boolean).slice(0, 4);
+
   return { prose, choices };
 }
 

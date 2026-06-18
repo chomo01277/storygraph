@@ -206,7 +206,7 @@ export const useStore = create<StoreState>()(
         })),
     }),
     {
-      name: "storygraph:v3",
+      name: "storygraph:v5",
       onRehydrateStorage: () => (state) => {
         if (!state) return;
         if (Object.keys(state.stories).length === 0) {

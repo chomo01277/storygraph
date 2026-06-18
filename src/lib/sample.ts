@@ -1,184 +1,221 @@
 import type { Story } from "./types";
 
-const bg = (q: string, lock: number) =>
-  `https://loremflickr.com/1280/720/${q}?lock=${lock}`;
-
 /**
- * Seed story shipped with the app so the full Studio + Player are demoable instantly.
- * A branching zombie-outbreak survival escape.
+ * Seed story: an alternate-history wizarding adventure — "what if Dumbledore had lived?"
+ *
+ * Imagery uses real Harry Potter film stills (characters) and the actual Hogwarts
+ * filming locations (Alnwick Castle, Christ Church, the Bodleian, the Forest of Dean),
+ * served by Wikimedia's CDN. These are used for a non-commercial hackathon demo;
+ * the film stills remain © Warner Bros. — swap to licensed art for any public release.
  */
+const IMG = {
+  hogwarts:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Alnwick_Castle_in_uk.jpg/1280px-Alnwick_Castle_in_uk.jpg",
+  greatHall:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Tom_Quad%2C_Christ_Church%2C_Oxford.jpg/1280px-Tom_Quad%2C_Christ_Church%2C_Oxford.jpg",
+  library:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Bibliotheca_Bodleiana.jpg/1280px-Bibliotheca_Bodleiana.jpg",
+  forest:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Symonds_Yat_Rock_View.JPG/1280px-Symonds_Yat_Rock_View.JPG",
+  dumbledore: "https://upload.wikimedia.org/wikipedia/en/e/e8/Dumbledore_-_Prisoner_of_Azkaban.jpg",
+  snape: "https://upload.wikimedia.org/wikipedia/en/b/b9/Ootp076.jpg",
+  voldemort: "https://upload.wikimedia.org/wikipedia/en/a/a3/Lordvoldemort.jpg",
+  harry: "https://upload.wikimedia.org/wikipedia/commons/9/99/Daniel_Radcliffe_as_Harry_Potter.jpg",
+  hermione: "https://upload.wikimedia.org/wikipedia/en/d/d3/Hermione_Granger_poster.jpg",
+  ron: "https://upload.wikimedia.org/wikipedia/en/5/5e/Ron_Weasley_poster.jpg",
+};
+
 export const SAMPLE_STORY: Story = {
-  id: "sample-outbreak",
-  title: "Outbreak: Last Bell",
+  id: "sample-dumbledore",
+  title: "Dumbledore Lives",
   description:
-    "A zombie infection erupts during 5th period. Fight through the halls, choose who to trust, and escape Northwood High — before the bell tolls for you.",
-  emoji: "🧟",
+    "An alternate sixth year: Snape's curse is stayed and Dumbledore survives the Astronomy Tower. With both mentors at his side, Harry must destroy the Horcruxes and end Voldemort — before the cursed ring claims the Headmaster first.",
+  emoji: "⚡",
   model: "claude-haiku-4-5",
-  advanced: { minimizeProtagonistDialogue: true, randomDice: true },
+  advanced: { minimizeProtagonistDialogue: false, randomDice: false },
 
   worldview: `1. GENRE
-Zombie-outbreak survival horror. A bite-borne infection erupts during 5th period at Northwood High. {user} must fight, scavenge, and ESCAPE the school to reach safety. Tense, cinematic, fast-moving — but escape is always possible.
+A magical alternate-history adventure set in the wizarding world. The player IS Harry Potter. POINT OF DIVERGENCE: on the Astronomy Tower, Snape does NOT kill Dumbledore — his true loyalty turns the moment. Dumbledore survives but is dying slowly from the cursed ring, and Snape's cover as a double agent is blown. Now both mentors openly guide Harry to find and destroy Voldemort's Horcruxes.
 
 2. CORE SETTING
-1) The infected turn within minutes of a bite. They are drawn to NOISE — running, shouting, and breaking glass bring the horde.
-2) {user} can move between areas, scavenge weapons and supplies, and choose to help or abandon other survivors. Those choices change who lives.
-3) The goal is to get OUT. Every scene should move {user} closer to an exit — the roof for an evac chopper, or the lot for a vehicle.
+1) {user} plays Harry Potter. Allies: Dumbledore (wise, gentle, racing his own failing heart), Snape (caustic, brilliant, secretly devoted), Hermione and Ron.
+2) Voldemort split his soul into Horcruxes; each must be found and destroyed before he can die. Nagini the serpent is one of them.
+3) Honor the magic — wands, canonical spells, and the rules of the wizarding world. A ticking clock: the curse is killing Dumbledore.
 
 3. NARRATION STYLE
-1) Second person, present tense, from {user}'s point of view.
-2) Visceral and sensory — sound, smell, adrenaline — but keep momentum. End each beat on a decision that pushes forward.
-3) Reward smart, decisive play with small wins; punish reckless noise with rising danger.
+1) Second person, present tense, as Harry. Immersive and lyrical — wonder and dread, in the tone of the books.
+2) Voice each character distinctly: Dumbledore measured and warm, Snape cold and clipped, Hermione earnest, Ron loyal and wry.
+3) Put all speech in double quotes. Render spell incantations in **bold** (e.g. **"Expelliarmus!"**). Use *italics* for Harry's thoughts and the burning of his scar.
 
 4. RESPONSE RULES
-1) Keep {user} alive and moving — injuries, close calls, and hard choices raise tension, but the story only resolves at an authored ending. Never kill {user} mid-scene.
-2) React to the player's last action and to which survivors are currently with them.
-3) Keep each turn to 1–3 short paragraphs, then offer 2–4 concrete choices that advance the escape.`,
+1) Keep Harry alive and the quest moving — danger, sacrifice, and hard choices raise the stakes, but the story only resolves at an authored ending.
+2) React to the player's last action and to which allies are present (trusting Snape changes everything).
+3) Keep each turn to 1–3 short paragraphs, then offer 2–4 concrete choices that advance the fight against Voldemort.`,
   endingPrompt: "",
 
   characters: [
     {
-      id: "c_jiwoo",
-      name: "Jiwoo",
+      id: "c_dumbledore",
+      name: "Albus Dumbledore",
       role: "sub",
       description:
-        "Your deskmate. Calm under pressure and quick on her feet. Sticks with you if you don't abandon her, and is the voice of reason when panic spreads.",
-      images: [],
+        "Headmaster of Hogwarts, the only wizard Voldemort ever feared. Survived the Tower, but the cursed ring is slowly killing him. Wise, gentle, and racing his own mortality to ready Harry for what comes.",
+      images: [{ id: "i_dumb", state: "default", url: IMG.dumbledore }],
     },
     {
-      id: "c_han",
-      name: "Coach Han",
+      id: "c_snape",
+      name: "Severus Snape",
       role: "sub",
       description:
-        "The gruff PE teacher — built like a door and twice as stubborn. Holds the line so others can run. Knows the roof access and keeps a pickup truck in the lot.",
-      images: [],
+        "Potions master and double agent, his loyalty to Dumbledore now laid bare. Caustic, brilliant, unreadable — he despises sentiment, yet would burn the world to protect Lily's son.",
+      images: [{ id: "i_snape", state: "default", url: IMG.snape }],
     },
     {
-      id: "c_min",
-      name: "Min",
+      id: "c_hermione",
+      name: "Hermione Granger",
+      role: "sub",
+      description: "The brightest witch of her age. Harry's anchor — research, logic, and fierce loyalty.",
+      images: [{ id: "i_herm", state: "default", url: IMG.hermione }],
+    },
+    {
+      id: "c_ron",
+      name: "Ron Weasley",
+      role: "sub",
+      description: "Harry's best friend. Brave when it counts, and the heart of the trio.",
+      images: [{ id: "i_ron", state: "default", url: IMG.ron }],
+    },
+    {
+      id: "c_voldemort",
+      name: "Lord Voldemort",
       role: "sub",
       description:
-        "A resourceful senior who saw it coming. Hoards supplies — first-aid, a crowbar, a campus map. Trades help for help; earn her trust slowly.",
-      images: [],
+        "The Dark Lord. Fragments of his torn soul, hidden as Horcruxes, keep him from death. Cruel, patient, and terrified of only one wizard — Dumbledore.",
+      images: [{ id: "i_vold", state: "default", url: IMG.voldemort }],
     },
   ],
 
   assets: [
-    { id: "a_classroom", name: "classroom", type: "background", url: bg("classroom,empty", 21) },
-    { id: "a_hallway", name: "hallway", type: "background", url: bg("school,hallway,dark", 22) },
-    { id: "a_cafeteria", name: "cafeteria", type: "background", url: bg("cafeteria", 23) },
-    { id: "a_library", name: "library", type: "background", url: bg("library,books", 24) },
-    { id: "a_stairwell", name: "stairwell", type: "background", url: bg("stairwell,concrete", 25) },
-    { id: "a_rooftop", name: "rooftop", type: "background", url: bg("rooftop,city,dusk", 26) },
-    { id: "a_parking", name: "parking", type: "background", url: bg("parking,garage,dark", 27) },
-    { id: "a_horde", name: "horde", type: "situation", url: bg("crowd,fog,silhouette", 28) },
+    { id: "a_hogwarts", name: "hogwarts", type: "background", url: IMG.hogwarts },
+    { id: "a_dumbledore", name: "dumbledore", type: "background", url: IMG.dumbledore },
+    { id: "a_snape", name: "snape", type: "background", url: IMG.snape },
+    { id: "a_voldemort", name: "voldemort", type: "background", url: IMG.voldemort },
+    { id: "a_harry", name: "harry", type: "background", url: IMG.harry },
+    { id: "a_great_hall", name: "great_hall", type: "background", url: IMG.greatHall },
+    { id: "a_forest", name: "forbidden_forest", type: "background", url: IMG.forest },
+    { id: "a_library", name: "library", type: "background", url: IMG.library },
   ],
 
   nodes: [
     {
       id: "n_prologue",
       kind: "prologue",
-      title: "Fifth Period",
-      trigger: "{user} is in 5th period when the outbreak begins.",
-      scene: `{bg::classroom}
-The clock reads 1:47 PM. Coach Han's substitute drones on about the French Revolution.
-Then the PA system shrieks — a teacher's voice, screaming, cut short.
-Through the window, a student sprints across the courtyard. Something chases him on all fours.
-Jiwoo grabs your sleeve, knuckles white. "We need to move. Now."`,
+      title: "The Tower Holds",
+      trigger: "The night Snape was meant to kill Dumbledore — and didn't.",
+      scene: `{bg::hogwarts}
+The Astronomy Tower. Cold wind, a sky drowned in stars. Dumbledore is slumped against the ramparts, his wand hand blackened and dying.
+Snape bursts through the door, Death Eaters at his back. His wand rises toward the Headmaster.
+For one heartbeat, everything hangs in the balance — then Snape turns, and his curse takes Bellatrix instead.
+"Get the boy out, Albus," he snarls. "My cover is finished."
+Dumbledore's eyes find yours. "It seems," he says softly, "we are all out of time to waste."`,
       position: { x: 0, y: 220 },
     },
     {
-      id: "n_corridor",
+      id: "n_plan",
       kind: "main_event",
-      title: "The Corridor",
-      trigger: "{user} escapes the classroom into the main hallway.",
-      scene: `{bg::hallway}
-The hallway is a tunnel of slamming lockers and running feet.
-Twenty meters down, the thing that used to be the librarian lurches between you and the far stairwell.
-Two ways out: the cafeteria doors swinging on your right, or the dark hush of the library to your left.`,
+      title: "The Headmaster's Plan",
+      trigger: "{user} learns the Horcrux plan from Dumbledore and Snape.",
+      scene: `{bg::dumbledore}
+Dumbledore's study — silver instruments whirring, Fawkes watching from his perch.
+"Voldemort has torn his soul apart," Dumbledore explains, cradling his cursed hand. "Seven Horcruxes. Destroy them, and he can finally die."
+Snape leans in the shadows, arms folded. "The Dark Lord still believes me loyal. That is a weapon we will not keep for long."
+Two paths open: the sea cave where a locket waits, or Snape's memories of the Dark Lord's secrets.`,
       position: { x: 320, y: 220 },
     },
     {
-      id: "n_cafeteria",
+      id: "n_cave",
       kind: "main_event",
-      title: "Cafeteria Gauntlet",
-      trigger: "{user} pushes through the cafeteria doors toward the kitchen exit.",
-      scene: `{bg::cafeteria}
-Overturned tables. The smell of spoiled milk and copper.
-A dozen of them feed in the center of the room — noise is death here.
-The kitchen's back door, and the gym stairs beyond, wait across the open floor.`,
+      title: "The Sea Cave",
+      trigger: "{user} descends into the cave to retrieve the locket Horcrux.",
+      scene: `{bg::voldemort}
+Black water, black rock. A stone basin glows with cursed potion that must be drunk to the last drop.
+Beneath the surface, pale hands begin to stir — the Inferi, the drowned dead.
+Dumbledore steadies himself on your shoulder. "Whatever you see — whatever I beg of you — do not stop until the basin is empty."`,
       position: { x: 660, y: 90 },
     },
     {
-      id: "n_library",
+      id: "n_snape",
       kind: "sub_event",
-      title: "The Quiet Library",
-      trigger: "{user} slips into the library looking for a quieter route.",
-      scene: `{bg::library}
-Dust and silence. The horde's roar dulls behind heavy oak doors.
-Min, a senior you barely know, crouches behind the returns desk with a loaded backpack.
-"There's a service stairwell behind the stacks," she whispers. "Help me, and it's yours."`,
+      title: "What Snape Knows",
+      trigger: "{user} reviews Snape's memories for the Dark Lord's weakness.",
+      scene: `{bg::snape}
+The dungeon air is thick with sage and something bitter.
+Snape pours a thread of silver memory into the Pensieve without looking at you. "Watch, Potter. The Dark Lord fears one thing above death."
+*His voice cracks, just once, on a name he will not say.*
+"There is a serpent — Nagini. Kill her, and he becomes mortal at last."`,
       position: { x: 660, y: 360 },
     },
     {
-      id: "n_overrun",
+      id: "n_dark",
       kind: "sub_ending",
-      title: "Overrun",
-      trigger: "The horde catches {user} before they can escape.",
-      scene: `{bg::horde}
-There were too many. The noise brought all of them.
-The last thing you hear is the cafeteria doors giving way.
-The outbreak doesn't even slow down.`,
+      title: "The Dark Lord Ascendant",
+      trigger: "A Horcrux survives and Voldemort rises whole.",
+      scene: `{bg::voldemort}
+You were too slow. A Horcrux endures — and with it, so does he.
+Voldemort rises from the dark, whole and laughing, as Dumbledore's last strength fails.
+*Neither can live while the other survives.* Tonight, it is not you who lives.`,
       position: { x: 660, y: 600 },
     },
     {
-      id: "n_stairwell",
+      id: "n_forest",
       kind: "main_event",
-      title: "Stairwell to the Roof",
-      trigger: "{user} reaches the service stairwell with the way up blocked.",
-      scene: `{bg::stairwell}
-Concrete steps spiral up into emergency-light red.
-Coach Han braces the lower door with a fire extinguisher and his whole body.
-"Roof for the chopper, or the lot for my truck — pick fast, kid. I can't hold this."`,
+      title: "Into the Forest",
+      trigger: "{user} enters the Forbidden Forest to hunt Nagini.",
+      scene: `{bg::forbidden_forest}
+The Forbidden Forest swallows the moonlight. Somewhere ahead, Nagini hunts.
+Dumbledore can barely stand; the curse has reached his heart. "I will hold the clearing. You must finish this."
+Snape's wand flares at the treeline. "They're here — all of them. Decide quickly, Potter. The castle, or the kill."`,
       position: { x: 980, y: 240 },
     },
     {
-      id: "n_rooftop",
+      id: "n_greathall",
       kind: "main_ending",
-      title: "Rooftop Rescue",
-      trigger: "{user} climbs onto the roof as the rescue chopper arrives.",
-      scene: `{bg::rooftop}
-Wind. Open sky. A National Guard helicopter banks toward the roof, searchlight sweeping.
-A soldier waves you in over the rotor wash.
-You made it. The school burns behind you, small and far away.`,
+      title: "The Battle of Hogwarts",
+      trigger: "{user} faces Voldemort in the Great Hall with both mentors alive.",
+      scene: `{bg::great_hall}
+The Great Hall erupts — spellfire, shattering glass, the roar of a hundred wands.
+Dumbledore and Snape stand at your flanks as Voldemort screams his final curse.
+You raise your wand. **"Expelliarmus!"**
+His spell rebounds. It is over. Dawn breaks through the broken ceiling, and Hogwarts still stands.`,
       position: { x: 1300, y: 120 },
     },
     {
-      id: "n_driveout",
+      id: "n_finalspell",
       kind: "main_ending",
-      title: "Drive Out",
-      trigger: "{user} reaches the parking lot and Coach Han's truck.",
-      scene: `{bg::parking}
-The pickup roars to life on the third try.
-You smash through the chain-link gate as the horde pours out behind you.
-The road opens up, empty and grey. Alive — for now.`,
+      title: "The Final Spell",
+      trigger: "Snape steps into the killing curse meant for {user}.",
+      scene: `{bg::harry}
+Voldemort's killing curse streaks toward you — and Snape steps into its path.
+"For Lily," he breathes, and the green light takes him instead.
+In that opening, you and Dumbledore strike as one. The Dark Lord falls to ash on the scorched grass.
+The cost was terrible. But the world is free.`,
       position: { x: 1300, y: 380 },
     },
   ],
   edges: [
-    { id: "e1", source: "n_prologue", target: "n_corridor" },
-    { id: "e2", source: "n_corridor", target: "n_cafeteria" },
-    { id: "e3", source: "n_corridor", target: "n_library" },
-    { id: "e4", source: "n_cafeteria", target: "n_stairwell" },
-    { id: "e5", source: "n_library", target: "n_stairwell" },
-    { id: "e6", source: "n_cafeteria", target: "n_overrun" },
-    { id: "e7", source: "n_stairwell", target: "n_rooftop" },
-    { id: "e8", source: "n_stairwell", target: "n_driveout" },
+    { id: "e1", source: "n_prologue", target: "n_plan" },
+    { id: "e2", source: "n_plan", target: "n_cave" },
+    { id: "e3", source: "n_plan", target: "n_snape" },
+    { id: "e4", source: "n_cave", target: "n_forest" },
+    { id: "e5", source: "n_snape", target: "n_forest" },
+    { id: "e6", source: "n_cave", target: "n_dark" },
+    { id: "e7", source: "n_forest", target: "n_greathall" },
+    { id: "e8", source: "n_forest", target: "n_finalspell" },
   ],
 
   publish: {
-    previewImage: "",
-    genres: ["Zombie", "Survival", "Horror"],
-    ageRating: "15",
+    previewImage: IMG.hogwarts,
+    genres: ["Fantasy", "Adventure", "Magic"],
+    ageRating: "12",
     visibility: "public",
     published: true,
   },
