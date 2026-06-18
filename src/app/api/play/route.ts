@@ -1,6 +1,9 @@
 import type { NextRequest } from "next/server";
-import { getAnthropic, MODEL, mockStream } from "@/lib/llm";
+import type AnthropicSDK from "@anthropic-ai/sdk";
+import { resolveProvider, getClient, modelFor, mockStream } from "@/lib/llm";
 import type { ChatMessage } from "@/lib/types";
+
+export const maxDuration = 60;
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,7 +17,8 @@ interface PlayBody {
 export async function POST(req: NextRequest) {
   const { system, messages, model }: PlayBody = await req.json();
   const encoder = new TextEncoder();
-  const client = getAnthropic();
+  const provider = resolveProvider();
+  const client = getClient(provider);
 
   const stream = new ReadableStream({
     async start(controller) {
@@ -25,8 +29,8 @@ export async function POST(req: NextRequest) {
         if (!client) {
           for await (const text of mockStream(system, messages)) send({ text });
         } else {
-          const llmStream = client.messages.stream({
-            model: model || MODEL,
+          const llmStream = (client as AnthropicSDK).messages.stream({
+            model: modelFor(provider, model),
             max_tokens: 1200,
             system,
             messages: messages.map((m) => ({ role: m.role, content: m.content })),
