@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { ChatMessage, Story, StoryNode } from "@/lib/types";
 import { NODE_KIND_META } from "@/lib/types";
 import { buildSystemPrompt, transitionNote, parseChoices, parseScene } from "@/lib/prompt";
+import Narration from "./Narration";
 
 type Phase = "title" | "scene" | "play" | "branch" | "end";
 
@@ -245,7 +246,7 @@ export default function PlayScreen({ story }: { story: Story }) {
         >
           {frames[frameIdx]?.text && (
             <div className="mx-auto w-full max-w-3xl rounded-2xl border border-white/10 bg-black/55 p-6 backdrop-blur-sm">
-              <p className="text-lg leading-relaxed">{frames[frameIdx].text}</p>
+              <Narration text={frames[frameIdx].text ?? ""} size="lg" />
             </div>
           )}
           <p className="mt-4 text-center text-xs text-white/50">tap to continue ›</p>
@@ -257,10 +258,7 @@ export default function PlayScreen({ story }: { story: Story }) {
         <div className="absolute inset-x-0 bottom-0 z-10 p-6">
           <div className="mx-auto w-full max-w-3xl">
             <div className="max-h-[46vh] overflow-y-auto rounded-2xl border border-white/10 bg-black/60 p-6 backdrop-blur-sm">
-              <p className="prose-narration whitespace-pre-wrap text-[15px] leading-relaxed">
-                {prose}
-                {streaming && <span className="ml-0.5 animate-pulse">▋</span>}
-              </p>
+              <Narration text={prose} streaming={streaming} />
             </div>
 
             {!streaming && (

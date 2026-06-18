@@ -30,6 +30,7 @@ export function buildSystemPrompt(
     `- Dramatize the current event vividly, true to the worldview's tone and rules.`,
     `- Keep each turn to 1–3 short paragraphs, then stop at a decision point.`,
     `- React to the protagonist's last action; never decide their choices for them.`,
+    `- FORMATTING (Markdown): put ALL character speech in double quotes ("like this"). Use **bold** for sharp emphasis — a shout, a sudden sound, a key object. Use *italics* for ${playerName}'s inner thoughts. Keep narration outside quotes as plain prose.`,
     story.advanced.minimizeProtagonistDialogue
       ? `- Minimize the protagonist's own dialogue; focus on the world reacting to them.`
       : ``,
